@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+<head>
+<title>Anderson Valley Wine Map</title>
+
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<link href = "css/style_blank.css" type = "text/css" rel="stylesheet">
+<link href = "css/leaflet-sidebar.css" type = "text/css" rel="stylesheet"> 
+<link href = "css/Control.MiniMap.css" type = "text/css" rel="stylesheet"> 
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+<script src ="js/wines.js"></script>
+<script src ="js/leaflet-sidebar.js"></script>
+<script	src ="js/Control.MiniMap.js"></script>
+	
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+<style>
+	.ImgSize {
+		width: 240px;
+		margin: 0 auto;
+	}	
+	
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+        .text {
+            font-style: italic;
+            color: #AAA;
+        }
+</style>
+
+
+</head>
+
+  <body>
+
+<div id="mapid" class="sidebar-map"></div>
+
+
+
+	<script>
+	var mymap = L.map('mapid').setView([39.0866, -123.4795], 12);
+
+	L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	subdomains: 'abcd',
+	minZoom: 0,
+	maxZoom: 18,
+	ext: 'png'
+}).addTo(mymap);
+		
+	var osm2 = new L.TileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
+	var miniMap = new L.Control.MiniMap(osm2, {
+			centerFixed: [39.0866, -123.4795],
+			zoomLevelFixed: 5
+		}).addTo(mymap);
+    
+	var allicon = new L.icon({iconUrl:'images/orange.png'})
+
+		
+	function MuralInfo(feature, layer) {
+		layer.bindPopup(feature.properties.Name + feature.properties.Photo)
+		layer.setIcon (allicon)
+	};
+		
+
+	L.geoJson(wines, {
+		onEachFeature: MuralInfo	
+	}).addTo(mymap);
+		
+	
+		
+
+	</script>
+	
+	
+
+</body>
+</html>
